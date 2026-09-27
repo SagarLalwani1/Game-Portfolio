@@ -5,12 +5,15 @@ import { GameScene, type JourneyEvent } from "./game/GameScene";
 
 type View = "home" | "journey";
 
+type ResumeMode = "none" | "preview";
+
 export default function App() {
   const gameRef = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<View>("home");
   const [selected, setSelected] = useState<Era | null>(null);
   const [reward, setReward] = useState<Era | null>(null);
   const [visited, setVisited] = useState<string[]>([]);
+  const [resumeMode, setResumeMode] = useState<ResumeMode>("none");
 
   useEffect(() => {
     if (view !== "journey" || !gameRef.current) return;
@@ -48,6 +51,7 @@ export default function App() {
           <button onClick={() => scrollTo("skills")}>Skills</button>
           <button onClick={() => scrollTo("journey")}>Journey</button>
           <a href="https://github.com/SagarLalwani1" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <button onClick={() => setResumeMode("preview")}>Resume</button>
           <button className="nav-cta" onClick={() => setView("journey")}>Enter Journey</button>
         </nav>
       </header>
@@ -62,8 +66,9 @@ export default function App() {
                   <h1>{professional.headline}</h1>
                   <p className="lede">{professional.summary}</p>
                   <div className="hero-actions">
-                    <button className="primary" onClick={() => setView("journey")}>Explore the journey →</button>
-                    <button className="secondary" onClick={() => scrollTo("work")}>View professional profile</button>
+                    <button className="primary" onClick={() => scrollTo("work")}>View professional profile →</button>
+                    <button className="secondary" onClick={() => setView("journey")}>Explore the journey</button>
+                    <a className="text-action" href="/Sagar_Lalwani_Resume.pdf" download>Download résumé ↓</a>
                   </div>
                 </div>
                 <aside className="profile-card">
@@ -85,10 +90,19 @@ export default function App() {
               <div className="section-heading"><p className="kicker">PROFESSIONAL VIEW</p><h2>What I work on</h2></div>
               <div className="experience-grid">
                 {professional.experience.map((item) => (
-                  <article className="experience" key={item.role}>
-                    <div className="experience-meta"><span>{item.period}</span><span>↗</span></div>
-                    <h3>{item.role}</h3><p>{item.text}</p>
+                  <article className="experience" key={`${item.company}-${item.role}`}>
+                    <div className="experience-meta"><span>{item.period}</span><span>●</span></div>
+                    <p className="company">{item.company}</p><h3>{item.role}</h3><p>{item.text}</p>
                   </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="section impact-section">
+              <div className="section-heading"><p className="kicker">ENGINEERING IMPACT</p><h2>What changed because I worked on it</h2></div>
+              <div className="impact-grid">
+                {professional.impact.map((item) => (
+                  <article className="impact" key={item.label}><strong>{item.value}</strong><span>{item.label}</span><p>{item.detail}</p></article>
                 ))}
               </div>
             </section>
@@ -96,6 +110,19 @@ export default function App() {
             <section id="skills" className="section compact-section">
               <div className="section-heading"><p className="kicker">TOOLBOX</p><h2>Technologies I use</h2></div>
               <div className="skills-cloud">{professional.skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
+            </section>
+
+            <section className="section projects-section">
+              <div className="section-heading"><p className="kicker">SELECTED BUILDS</p><h2>Products I have shipped</h2></div>
+              <div className="projects-grid">
+                {professional.projects.map((project) => (
+                  <article className="project-card" key={project.name}>
+                    <div className="project-top"><span>{project.year}</span><span>PROJECT</span></div>
+                    <h3>{project.name}</h3><p className="project-label">{project.label}</p><p>{project.text}</p>
+                    <div className="tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                  </article>
+                ))}
+              </div>
             </section>
 
             <section id="journey" className="section journey-intro">
@@ -126,6 +153,15 @@ export default function App() {
             <p className="kicker">{selected.year} · CHAPTER</p><h2>{selected.title}</h2><p className="modal-summary">{selected.summary}</p>
             <div className="highlights">{selected.highlights.map((item) => <p key={item}><span>+</span>{item}</p>)}</div>
             <div className="modal-footer"><div className="tags">{selected.tech.map((tech) => <span key={tech}>{tech}</span>)}</div><small>Reward: {selected.reward}</small></div>
+          </article>
+        </div>
+      )}
+
+      {resumeMode === "preview" && (
+        <div className="modal resume-modal" onClick={() => setResumeMode("none")}>
+          <article className="resume-card" onClick={(e) => e.stopPropagation()}>
+            <div className="resume-head"><div><p className="kicker">CURRENT RÉSUMÉ</p><h2>Sagar Lalwani</h2></div><div className="resume-actions"><a className="primary" href="/Sagar_Lalwani_Resume.pdf" download>Download PDF ↓</a><button className="modal-close" onClick={() => setResumeMode("none")}>×</button></div></div>
+            <iframe title="Sagar Lalwani résumé" src="/Sagar_Lalwani_Resume.pdf" />
           </article>
         </div>
       )}
