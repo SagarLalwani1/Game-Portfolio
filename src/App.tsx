@@ -68,7 +68,7 @@ export default function App() {
                   <div className="hero-actions">
                     <button className="primary" onClick={() => scrollTo("work")}>View professional profile →</button>
                     <button className="secondary" onClick={() => setView("journey")}>Explore the journey</button>
-                    <a className="text-action" href="/Sagar_Lalwani_Resume__.pdf" download>Download résumé ↓</a>
+                    <a className="text-action" href={`${import.meta.env.BASE_URL}Sagar_Lalwani_Resume.pdf`} download>Download résumé ↓</a>
                   </div>
                 </div>
                 <aside className="profile-card">
@@ -160,8 +160,8 @@ export default function App() {
       {resumeMode === "preview" && (
         <div className="modal resume-modal" onClick={() => setResumeMode("none")}>
           <article className="resume-card" onClick={(e) => e.stopPropagation()}>
-            <div className="resume-head"><div><p className="kicker">CURRENT RÉSUMÉ</p><h2>Sagar Lalwani</h2></div><div className="resume-actions"><a className="primary" href="/Sagar_Lalwani_Resume__.pdf" download>Download PDF ↓</a><button className="modal-close" onClick={() => setResumeMode("none")}>×</button></div></div>
-            <iframe title="Sagar Lalwani résumé" src="/Sagar_Lalwani_Resume__.pdf" />
+            <div className="resume-head"><div><p className="kicker">CURRENT RÉSUMÉ</p><h2>Sagar Lalwani</h2></div><div className="resume-actions"><a className="primary" href={`${import.meta.env.BASE_URL}Sagar_Lalwani_Resume.pdf`} download>Download PDF ↓</a><button className="modal-close" onClick={() => setResumeMode("none")}>×</button></div></div>
+            <iframe title="Sagar Lalwani résumé" src={`${import.meta.env.BASE_URL}Sagar_Lalwani_Resume.pdf`}/>
           </article>
         </div>
       )}
