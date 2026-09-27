@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 export default defineConfig({
     plugins: [react()],
+    base: "/Game-Portfolio/",
     // 1. Set the output directory to 'docs'
     build: {
         outDir: 'docs',
