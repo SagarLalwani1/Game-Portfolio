@@ -1,12 +1,12 @@
 {
-  "name": "sagar-portfolio",
+  "name": "sagar-portfolio-v02",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "tsc -b && vite preview"
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "phaser": "^3.90.0",
